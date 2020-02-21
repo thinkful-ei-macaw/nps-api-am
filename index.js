@@ -29,10 +29,13 @@ function parksFormSubmit() {
  */
 function sendRequest(park, state, maxResults ) {
   const apiKey = '1Hge8qs8XNqiYFIF1HySn4MhboakRjzWjVKUV3UF';
-  fetch(`https://developer.nps.gov/api/v1/parks?q=${park}&stateCode=${state}&limit=${maxResults}&api_key=${apiKey}`)
+  fetch(`https://developer.nps.gov/api/v1/parks?q=${park}&stateCode=${state}&limit=${maxResults}&fields=addresses&api_key=${apiKey}`)
     .then(response => response.json())
     .then(responseJson => displayParks(responseJson))
-    .catch(() => alert('Something went wrong. Try again later.'));
+    .catch(error => {
+      alert('Something went wrong. Try again later.');
+      console.error(error);
+    });
 }
 
 /**
@@ -53,10 +56,15 @@ function generateParkTemplates(response) {
   const parks = response.data;
   
   parks.forEach(item => {
+    let address = item.addresses[0];
     html += `
       <article>
         <h2><a href="${item.url}" target="_blank">${item.fullName}</a></h2>
         <p>${item.description}</p>
+        <address>
+          ${address.line1 + '<br>'}    
+          ${address.city}, ${address.stateCode} ${address.postalCode}
+        </address>
       </article>
     `;
   });

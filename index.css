@@ -15,10 +15,10 @@ button {
 }
 
 #parks-display {
-  padding: 2em;
+  padding: 3em 2em 2em;
 }
 
-#parks-display article {
+#parks-display article:not(:last-of-type) {
   margin-bottom: 4em;
 }
 
